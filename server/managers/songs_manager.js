@@ -17,7 +17,7 @@ class SongsManager {
   }
 
   /**
-   * TODO : Implémenter la récupération d'une chanson en fonction de son id
+   * DONE : Implémenter la récupération d'une chanson en fonction de son id
    * Retourne une chanson en fonction de son id
    * @param {number} id identifiant de la chanson
    * @returns chanson correspondant à l'id
@@ -28,7 +28,7 @@ class SongsManager {
   }
 
   /**
-   * TODO : Implémenter l'inversement de l'état aimé d'une chanson
+   * DONE : Implémenter l'inversement de l'état aimé d'une chanson
    * Modifie l'état aimé d'une chanson par l'état inverse
    * @param {number} id identifiant de la chanson
    * @returns {boolean} le nouveau état aimé de la chanson
@@ -36,20 +36,16 @@ class SongsManager {
   async updateSongLike (id) {
     const allSongs = await this.getAllSongs();
     const songsTodelete = allSongs.find((song) => song.id === id);
-    let changedSong=this.getSongById(id);
+    let changedSong=await this.getSongById(id);
     changedSong.liked=!changedSong.liked;
+    console.log(changedSong);
     if (songsTodelete) {
       const songs = allSongs.filter((song) => song.id !== id);
-      songs.add(changedSong);
+      songs.push(changedSong);
       const songsToSave = JSON.stringify({ songs }, null, 2);
       await this.fileSystemManager.writeToJsonFile(this.JSON_PATH, songsToSave);
-    // const song = await this.getSongById(id);
-    // console.log(song);
-    // song.id = !song.id;    
-    // console.log(song.id);
-
-    // return song.id;
-
+    }
+    return changedSong.liked;
 
   }
 }

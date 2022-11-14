@@ -56,7 +56,7 @@ router.post("/", async (request, response) => {
 });
 
 /**
- * TODO : implémenter la modification d'une playlist
+ * DONE : implémenter la modification d'une playlist
  * Mets à jour l'information d'une playlist en fonction de son id
  * @memberof module:routes/playlists
  * @name PUT /playlists/:id
