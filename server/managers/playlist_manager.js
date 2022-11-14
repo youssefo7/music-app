@@ -4,7 +4,7 @@ const { randomUUID } = require("crypto");
 const fs = require("fs");
 
 class PlaylistManager {
-  constructor () {
+  constructor() {
     this.JSON_PATH = path.join(__dirname + "../../data/playlists.json");
     this.fileSystemManager = new FileSystemManager();
   }
@@ -13,19 +13,27 @@ class PlaylistManager {
    * Retourne toutes les playlists disponibles
    * @returns {Promise<Array>} la liste de toutes les playlists
    */
-  async getAllPlaylists () {
+  async getAllPlaylists() {
     const fileBuffer = await this.fileSystemManager.readFile(this.JSON_PATH);
     return JSON.parse(fileBuffer).playlists;
   }
 
   /**
-   * TODO : Implémenter la récupération d'une playlist en fonction de son id
+   * DONE : Implémenter la récupération d'une playlist en fonction de son id
    * Retourne une playlist en fonction de son id
    * @param {string} id
    * @returns Retourne la playlist en fonction de son id
    */
-  async getPlaylistById (id) {
-    return { id: "-1" };
+  async getPlaylistById(id) {
+    const playlists = await this.getAllPlaylists();
+    const length = playlists.length;
+    //console.log(playlists);
+    for (let i = 0; i < length; i++) {
+      if (playlists[i].id === id) {
+        return playlists[i];
+      }
+    }
+    return;
   }
 
   /**
@@ -33,7 +41,7 @@ class PlaylistManager {
    * @param {Object} playlist nouvelle playlist à ajouter
    * @returns retourne la playlist ajoutée
    */
-  async addPlaylist (playlist) {
+  async addPlaylist(playlist) {
     const playlists = await this.getAllPlaylists();
     playlist.id = randomUUID();
     await this.savePlaylistThumbnail(playlist);
@@ -43,12 +51,15 @@ class PlaylistManager {
   }
 
   /**
-   * TODO : Implémenter la mise à jour de la playlist et du fichiers de toutes les playlists
+   * DONE : Implémenter la mise à jour de la playlist et du fichiers de toutes les playlists
    * Modifie une playlist en fonction de son id et met à jour le fichier de toutes les playlists
    * @param {Object} playlist nouveau contenu de la playlist
    */
-  async updatePlaylist (playlist) {
+  async updatePlaylist(playlist) {
     let playlists = await this.getAllPlaylists();
+    //  let oldPlaylist =  await this.getPlaylistById(playlists.id);
+    await this.deletePlaylist(playlist.id);
+    await this.addPlaylist(playlist);
   }
 
   /**
@@ -56,7 +67,7 @@ class PlaylistManager {
    * @param {string} picture image représentée sous le format base64
    * @returns {string} le type de l'image
    */
-  async chooseProperEncoding (picture) {
+  async chooseProperEncoding(picture) {
     if (picture.startsWith("data:image/jpeg;base64,")) {
       return "jpeg";
     } else if (picture.startsWith("data:image/png;base64,")) {
@@ -74,7 +85,7 @@ class PlaylistManager {
    * @param {string} id identifiant de la playlist
    * @returns {Promise<boolean>} true si la playlist a été supprimée, false sinon
    */
-  async deletePlaylist (id) {
+  async deletePlaylist(id) {
     const allPlaylists = await this.getAllPlaylists();
     const playlistToDelete = allPlaylists.find((playlist) => playlist.id === id);
     if (playlistToDelete) {
@@ -93,7 +104,7 @@ class PlaylistManager {
    * @param {string} filePath chemin vers le fichier à supprimer
    * @returns {Promise<void>} une promesse avec 'undefined' en cas de réussite
    */
-  async deletePlaylistThumbnail (filePath) {
+  async deletePlaylistThumbnail(filePath) {
     return fs.promises.unlink(filePath);
   }
 
@@ -101,7 +112,7 @@ class PlaylistManager {
    * Sauvegarde l'image de prévisualisation d'une playlist sur disque
    * @param {Object} playlist playlist pour laquelle sauvegarder l'image
    */
-  async savePlaylistThumbnail (playlist) {
+  async savePlaylistThumbnail(playlist) {
     const fileFormat = await this.chooseProperEncoding(playlist.thumbnail);
     const thumbnailData = playlist.thumbnail.replace(`data:image/${fileFormat};base64,`, "");
     const thumbnailFileName = `assets/img/${playlist.id}.${fileFormat}`;

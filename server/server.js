@@ -23,6 +23,7 @@ app.use(express.static(PUBLIC_PATH));
 // TODO : Rajouter les routeurs sur les bon prefixes
 app.use("/api/playlists", playlistsRouter.router);
 
+
 const server = app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 module.exports = server;

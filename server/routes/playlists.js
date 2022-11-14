@@ -19,13 +19,22 @@ router.get("/", async (request, response) => {
 });
 
 /**
- * TODO : retourne un playlist en fonction de son id
+ * DONE : retourne un playlist en fonction de son id
  * Retourne playlist en fonction de son id
  * @memberof module:routes/playlists
  * @name GET /playlists/:id
  */
-router.use("/:id", async (request, response) => {
-  response.status(HTTP_STATUS.SERVER_ERROR).json({});
+router.get("/:id", async (request, response) => {
+  try {
+    const playlist = await playlistManager.getPlaylistById(request.params.id);
+    if(playlist === undefined) {
+      response.status(HTTP_STATUS.NOT_FOUND).send();
+      return;
+    }
+    response.status(HTTP_STATUS.SUCCESS).json(playlist);
+  } catch (error) {
+   response.status(HTTP_STATUS.SERVER_ERROR).json(error);
+  }
 });
 
 /**
@@ -52,18 +61,37 @@ router.post("/", async (request, response) => {
  * @memberof module:routes/playlists
  * @name PUT /playlists/:id
  */
-router.use("/:id", async (request, response) => {
-  response.status(HTTP_STATUS.SERVER_ERROR).json({});
+router.put("/:id", async (request, response) => {
+  try {
+    if (!Object.keys(request.body).length) {
+      response.status(HTTP_STATUS.BAD_REQUEST).send();
+      return;
+    }
+    await playlistManager.updatePlaylist(request.body);
+    response.status(HTTP_STATUS.SUCCESS).json({id: request.body.id});//ASK ABOUT THIS
+  } catch (error) {
+    response.status(HTTP_STATUS.SERVER_ERROR).json(error);
+  }
 });
 
 /**
- * TODO : implémenter la suppression de la requête
+ * DONE : implémenter la suppression de la requête
  * Supprime une playlist en fonction de son id
  * @memberof module:routes/playlists
  * @name DELETE /playlists/:id
  */
-router.use("/:id", async (request, response) => {
-  response.status(HTTP_STATUS.SERVER_ERROR).json({});
+router.delete("/:id", async (request, response) => {
+  try {
+    const isDeleted = await playlistManager.deletePlaylist(request.params.id);
+    if(isDeleted) {
+      response.status(HTTP_STATUS.SUCCESS).json(isDeleted);
+      return;
+    }
+    response.status(HTTP_STATUS.NOT_FOUND).send();
+  } catch (error) {
+   response.status(HTTP_STATUS.SERVER_ERROR).json(error);
+  }
+  
 });
 
 module.exports = { router, playlistManager };
