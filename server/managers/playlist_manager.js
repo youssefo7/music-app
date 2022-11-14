@@ -27,7 +27,6 @@ class PlaylistManager {
   async getPlaylistById(id) {
     const playlists = await this.getAllPlaylists();
     const length = playlists.length;
-    //console.log(playlists);
     for (let i = 0; i < length; i++) {
       if (playlists[i].id === id) {
         return playlists[i];
