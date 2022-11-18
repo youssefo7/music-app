@@ -19,7 +19,12 @@ const searchBarManager = new SearchBarManager(songsManager, playlistManager);
 router.get("/", async (request, response) => {
   try {
     const exact = request.query.exact === "true"; // par défaut : tout est un string
-    response.status(HTTP_STATUS.SERVER_ERROR).json({});
+    const queryy = request.query.search_query;
+    const elem = await searchBarManager.search(queryy, exact);
+    console.log(elem);
+    console.log(queryy);
+
+    response.status(HTTP_STATUS.SUCCESS).json(elem);
   } catch (error) {
     response.status(HTTP_STATUS.SERVER_ERROR).send(error);
   }

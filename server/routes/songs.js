@@ -25,10 +25,20 @@ router.get("/", async (request, response) => {
  * @memberof module:routes/songs
  * @name GET /songs/:id
  */
-router.use("/:id", async (request, response) => {
-  response.status(HTTP_STATUS.SERVER_ERROR).json({});
-});
+router.get("/:id", async (request, response) => {
+  try {
+    const songs = await songsManager.getSongById(parseInt(request.params.id));
+    if (songs === undefined) {
+      response.status(HTTP_STATUS.NOT_FOUND).send();
+      return;
+    }
+    response.status(HTTP_STATUS.SUCCESS).json(songs);
+  } catch (error) {
+    response.status(HTTP_STATUS.SERVER_ERROR).json(error);
+  }
 
+  //response.status(HTTP_STATUS.SERVER_ERROR).json(err);
+});
 /**
  * Retourne le contenu d'un fichier de musique en fonction de son id
  * @memberof module:routes/songs
@@ -40,7 +50,9 @@ router.get("/player/:id", async (request, response) => {
     const filePath = path.join(__dirname + "../../" + song.src);
     const stat = await fs.promises.stat(filePath);
     const fileSize = stat.size;
-    const readStream = fs.createReadStream(path.join(__dirname + "../../" + song.src));
+    const readStream = fs.createReadStream(
+      path.join(__dirname + "../../" + song.src)
+    );
     const headers = {
       "Content-Type": ":audio/mpeg",
       "Content-Length": fileSize,
@@ -59,8 +71,13 @@ router.get("/player/:id", async (request, response) => {
  * @memberof module:routes/songs
  * @name PATCH /songs/:id/like
  */
-router.use("/:id/like", async (request, response) => {
-  response.status(HTTP_STATUS.SERVER_ERROR).json({ liked: false });
+router.patch("/:id/like", async (request, response) => {
+  try {
+    const song = songsManager.updateSongLike(request.params.id);
+    response.status(HTTP_STATUS.SUCCESS).json({ liked: song });
+  } catch (error) {
+    response.status(HTTP_STATUS.SERVER_ERROR).json({ liked: song });
+  }
 });
 
 module.exports = { router, songsManager };
