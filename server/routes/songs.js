@@ -20,7 +20,7 @@ router.get("/", async (request, response) => {
 });
 
 /**
- * TODO : Implementer la requête
+ * DONE : Implementer la requête
  * Retourne une chanson en fonction de son id
  * @memberof module:routes/songs
  * @name GET /songs/:id
@@ -66,7 +66,7 @@ router.get("/player/:id", async (request, response) => {
 });
 
 /**
- * TODO : implémenter la gestion de la requête et retourner le nouveau statut
+ * DONE : implémenter la gestion de la requête et retourner le nouveau statut
  * Modifie l'état aimé d'une chanson en fonction de son id
  * @memberof module:routes/songs
  * @name PATCH /songs/:id/like

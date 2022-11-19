@@ -93,7 +93,7 @@ export class Library {
   }
 
   /**
-   * TODO
+   * DONE
    * Effectue une recherche parmis les playlists et chansons disponibles dans l'objet 'searchSources'
    * Met à jour la page avec les éléments qui correspondent à la recherche
    * @param {HTMLInputElement} searchInput élément <input> qui représente la barre de recherche
@@ -101,6 +101,8 @@ export class Library {
    */
   async search (searchInput, exactMatch) {
     const searchString = searchInput.value;
+    const searched = await this.HTTPManager.search(searchString, exactMatch);
+    this.generateLists(searched.playlists, searched.songs);
   }
 }
 

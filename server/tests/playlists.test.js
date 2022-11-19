@@ -18,7 +18,7 @@ describe("Playlist API test", () => {
     expect(response.body).toEqual(playlists);
   });
 
-  // TODO : Make sure to replace back default value to playlist.json
+  // DONE : Make sure to replace back default value to playlist.json
   it("GET request to /api/playlists/:id should return a playlist", async () => {
     const response = await request.get(`${API_URL}/0`);
     expect(response.status).toBe(200);

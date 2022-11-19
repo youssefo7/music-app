@@ -39,6 +39,7 @@ export const HTTPInterface = {
       method: "PUT",
       body: JSON.stringify(data),
       headers: {
+        // to be removed
         "content-type": "application/json",
       },
     });
@@ -58,33 +59,33 @@ export default class HTTPManager {
   }
 
   /**
-   * TODO : implémenter la requête vers le serveur
+   * DONE : implémenter la requête vers le serveur
    * Récupère et retourne toutes les chansons du serveur
    * @returns {Promise} Liste des chansons
    */
   async fetchAllSongs () {
-    const songs = [];
+    const songs = HTTPInterface.GET(`${this.songsBaseURL}`);
     return songs;
   }
 
   /**
-   * TODO : implémenter la requête vers le serveur
+   * DONE : implémenter la requête vers le serveur
    * Récupère et retourne toutes les playlists du serveur
    * @returns {Promise} Liste des playlists
    */
   async fetchAllPlaylists () {
-    const playlists = [];
+    const playlists = HTTPInterface.GET(`${this.playlistBaseURL}`);
     return playlists;
   }
 
   /**
-   * TODO : implémenter la requête vers le serveur
+   * DONE : implémenter la requête vers le serveur
    * Récupère et retourne une chanson du serveur en fonction de son id
    * @param {number} id identifiant de la chanson
    * @returns {Promise} une chanson
    */
   async fetchSong (id) {
-    const song = { id: -1 };
+    const song = HTTPInterface.GET(`${this.songsBaseURL}/${id}`);// { id: -1 };
     return song;
   }
 
@@ -100,7 +101,7 @@ export default class HTTPManager {
   }
 
   /**
-   * TODO : implémenter la requête vers le serveur
+   * DONE : implémenter la requête vers le serveur
    * Effectue une recherche de mot clé sur le serveur et retourne le résultat
    * Les paramètres sont envoyés dans la query de la requête HTTP sous le format suivant :
    * search_query=query&exact=exact
@@ -111,7 +112,7 @@ export default class HTTPManager {
    * ou les 2 attributs sont des tableaux avec les playlists et les chansons qui correspondent à la recherche
    */
   async search (query, exact) {
-    const searchResults = { playlists: [], songs: [] };
+    const searchResults = HTTPInterface.GET(`search?search_query=${query}&exact=${exact}`);//{ playlists: [], songs: [] };
     return searchResults;
   }
 
@@ -150,54 +151,58 @@ export default class HTTPManager {
   }
 
   /**
-   * TODO : implémenter la requête vers le serveur
+   * DONE : implémenter la requête vers le serveur
    * Récupère et retourne une playlist du serveur en fonction de son id
    * @param {number} id Id de la playlist
    * @returns {Promise} Playlist correspondant à l'id
    */
   async getPlaylistById (id) {
     try {
-      const playlist = {};
+      const playlist = HTTPInterface.GET(`${this.playlistBaseURL}/${id}`);
       return playlist;
+      
     } catch (err) {
       window.alert(err);
     }
   }
 
   /**
-   * TODO : implémenter la requête vers le serveur
+   * DONE : implémenter la requête vers le serveur
    * Ajoute une nouvelle playlist sur le serveur à travers une requête
    * @param {Object} playlist playlist à envoyer au serveur
    */
   async addNewPlaylist (playlist) {
     try {
-      await Promise.resolve("TODO");
+      await Promise.resolve(playlist);
+      HTTPInterface.POST(`${this.playlistBaseURL}`,playlist);
     } catch (err) {
       window.alert("An error has occured while adding a new playlist", err);
     }
   }
 
   /**
-   * TODO : Implémenter la requête vers le serveur
+   * DONE : Implémenter la requête vers le serveur
    * Modifie une playlist en envoyant un objet avec les nouvelles valeurs au serveur
    * @param {Object} playlist playlist à envoyer au serveur
    */
   async updatePlaylist (playlist) {
     try {
-      await Promise.resolve("TODO");
+      await Promise.resolve(playlist);
+      HTTPInterface.PUT(`${this.playlistBaseURL}/${playlist.id}`,playlist);
     } catch (err) {
       window.alert("An error has occured while adding a new playlist", err);
     }
   }
 
   /**
-   * TODO : Implémenter la requête vers le serveur
+   * DONE : Implémenter la requête vers le serveur
    * Supprime une playlist sur le serveur à travers une requête
    * @param {string} id identifiant de la playlist à supprimer
    */
   async deletePlaylist (id) {
     try {
-      await Promise.resolve("TODO");
+      await Promise.resolve(id);
+      HTTPInterface.DELETE(`${this.playlistBaseURL}/${id}`);
     } catch (err) {
       window.alert("An error has occured while deleting a playlist", err);
     }
