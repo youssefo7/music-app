@@ -57,8 +57,14 @@ class PlaylistManager {
   async updatePlaylist(playlist) {
     let playlists = await this.getAllPlaylists();
     //  let oldPlaylist =  await this.getPlaylistById(playlists.id);
-    await this.deletePlaylist(playlist.id);
-    await this.addPlaylist(playlist);
+    //await this.deletePlaylist(playlist.id);
+    const newPlaylists = playlists.map((item) => {
+      return item.id === playlist.id ? playlist : item;
+    });
+
+    await this.savePlaylistThumbnail(playlist);
+    playlists = newPlaylists;
+    await this.fileSystemManager.writeToJsonFile(this.JSON_PATH, JSON.stringify({playlists}));
   }
 
   /**
