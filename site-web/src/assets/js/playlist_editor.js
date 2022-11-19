@@ -148,9 +148,10 @@ export default class PlayListEditor {
     };
     // DONE : Envoyer la bonne requête
     if (playlistId) {
-      const playlist = await this.HTTPManager.getPlaylistById(playlistId);
+      // const playlist = await this.HTTPManager.getPlaylistById(playlistId);
       // DONE : Modifer la playlist
-      await this.HTTPManager.updatePlaylist(playlist);
+      newPlaylist.id = playlistId;
+      await this.HTTPManager.updatePlaylist(newPlaylist);
     } else {
       await this.HTTPManager.addNewPlaylist(newPlaylist);
       // DONE : Créer la playlist
