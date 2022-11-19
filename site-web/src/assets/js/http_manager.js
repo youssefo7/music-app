@@ -112,7 +112,7 @@ export default class HTTPManager {
    * ou les 2 attributs sont des tableaux avec les playlists et les chansons qui correspondent à la recherche
    */
   async search (query, exact) {
-    const searchResults = HTTPInterface.GET(`search?search_query=${query}&exact=${exact}`);//{ playlists: [], songs: [] };
+    const searchResults = HTTPInterface.GET(`search?search_query=${query}&exact=${exact}`);// { playlists: [], songs: [] };
     return searchResults;
   }
 
@@ -160,7 +160,6 @@ export default class HTTPManager {
     try {
       const playlist = HTTPInterface.GET(`${this.playlistBaseURL}/${id}`);
       return playlist;
-      
     } catch (err) {
       window.alert(err);
     }
@@ -174,7 +173,7 @@ export default class HTTPManager {
   async addNewPlaylist (playlist) {
     try {
       await Promise.resolve(playlist);
-      HTTPInterface.POST(`${this.playlistBaseURL}`,playlist);
+      HTTPInterface.POST(`${this.playlistBaseURL}`, playlist);
     } catch (err) {
       window.alert("An error has occured while adding a new playlist", err);
     }
@@ -188,7 +187,7 @@ export default class HTTPManager {
   async updatePlaylist (playlist) {
     try {
       await Promise.resolve(playlist);
-      HTTPInterface.PUT(`${this.playlistBaseURL}/${playlist.id}`,playlist);
+      HTTPInterface.PUT(`${this.playlistBaseURL}/${playlist.id}`, playlist);
     } catch (err) {
       window.alert("An error has occured while adding a new playlist", err);
     }

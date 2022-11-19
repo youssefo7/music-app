@@ -2,12 +2,12 @@ import HTTPManager from "./http_manager.js";
 import { SERVER_URL } from "./consts.js";
 
 export default class PlayListEditor {
-  constructor(HTTPManager) {
+  constructor (HTTPManager) {
     this.HTTPManager = HTTPManager;
     this.songs = [];
   }
 
-  buildDataList(dataList, songs) {
+  buildDataList (dataList, songs) {
     dataList.innerHTML = "";
     songs.forEach((song) => {
       const option = document.createElement("option");
@@ -16,12 +16,12 @@ export default class PlayListEditor {
     });
   }
 
-  updateImageDisplay() {
+  updateImageDisplay () {
     const imagePreview = document.getElementById("image-preview");
     imagePreview.src = URL.createObjectURL(this.files[0]);
   }
 
-  addItemSelect(e) {
+  addItemSelect (e) {
     e.preventDefault();
     const songContainer = document.getElementById("song-list");
     const index = songContainer.children.length + 1;
@@ -49,7 +49,7 @@ export default class PlayListEditor {
     songContainer.appendChild(inputContainer);
   }
 
-  async load() {
+  async load () {
     const imageInput = document.getElementById("image");
     const addSongButton = document.getElementById("add-song-btn");
     const form = document.getElementById("playlist-form");
@@ -88,7 +88,7 @@ export default class PlayListEditor {
    * Charge une playlist à modifier et rempli le formulaire de la page
    * @param {string} id identifiant de la playlist
    */
-  async loadForEdit(id) {
+  async loadForEdit (id) {
     const playlist = await this.HTTPManager.getPlaylistById(id);
     document.getElementById("name").value = playlist.name;
     document.getElementById("description").value = playlist.description;
@@ -121,7 +121,7 @@ export default class PlayListEditor {
    * @param {HTMLFormELement} form formulaire de la playlist
    * @param {string} playlistId identifiant de la playlist
    */
-  async createPlaylist(form, playlistId) {
+  async createPlaylist (form, playlistId) {
     const elements = form.elements;
     const name = elements.name.value;
     const description = elements.description.value;
@@ -162,14 +162,13 @@ export default class PlayListEditor {
    * Suite à la supression, l'utilisateur est redirigé vers la page 'index.html'
    * @param {string} id identifiant de la playlist à supprimer
    */
-  async deletePlaylist(id) {
-   // const playlist = await this.HTTPManager.getPlaylistById(id);
+  async deletePlaylist (id) {
+    // const playlist = await this.HTTPManager.getPlaylistById(id);
     await this.HTTPManager.deletePlaylist(id);
     location.href = "./index.html";
-
   }
 
-  async getImageInput(input, reader = new FileReader()) {
+  async getImageInput (input, reader = new FileReader()) {
     if (input && input.files && input.files[0]) {
       const image = await new Promise((resolve) => {
         reader.onload = (e) => resolve(reader.result);
@@ -179,7 +178,7 @@ export default class PlayListEditor {
     }
   }
 
-  getIdFromName(elementName) {
+  getIdFromName (elementName) {
     const element = this.songs.find((element) => element.name === elementName);
     const id = element ? element.id : -1;
     return id;

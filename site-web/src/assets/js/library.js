@@ -1,7 +1,6 @@
 import HTTPManager from "./http_manager.js";
 import { SERVER_URL } from "./consts.js";
 
-
 export class Library {
   constructor (HTTPManager) {
     this.HTTPManager = HTTPManager;
