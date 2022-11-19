@@ -115,7 +115,7 @@ export default class PlayListEditor {
   }
 
   /**
-   * TODO : implémenter l'envoi des requêtes en fonction de si on veut créer ou modifier une playlist existante
+   * DONE : implémenter l'envoi des requêtes en fonction de si on veut créer ou modifier une playlist existante
    * Créé une playlist sur le serveur à travers une requête
    * ou envoie une requête de modification si playlistId n'est pas 'undefined'
    * @param {HTMLFormELement} form formulaire de la playlist
@@ -146,19 +146,19 @@ export default class PlayListEditor {
         }
       }),
     };
-    // TODO : Envoyer la bonne requête
+    // DONE : Envoyer la bonne requête
     if (playlistId) {
       const playlist = await this.HTTPManager.getPlaylistById(playlistId);
-      // TODO : Modifer la playlist
+      // DONE : Modifer la playlist
       await this.HTTPManager.updatePlaylist(playlist);
     } else {
       await this.HTTPManager.addNewPlaylist(newPlaylist);
-      // TODO : Créer la playlist
+      // DONE : Créer la playlist
     }
   }
 
   /**
-   * TODO : Supprimer une playlist à travers une requête HTTP
+   * DONE : Supprimer une playlist à travers une requête HTTP
    * Suite à la supression, l'utilisateur est redirigé vers la page 'index.html'
    * @param {string} id identifiant de la playlist à supprimer
    */

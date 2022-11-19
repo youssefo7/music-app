@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: SIZE_LIMIT }));
 app.use(express.static(PUBLIC_PATH));
 
-// TODO : Rajouter les routeurs sur les bon prefixes
+// DONE : Rajouter les routeurs sur les bon prefixes
 app.use("/api/playlists", playlistsRouter.router);
 app.use("/api/songs", songsRouter.router);
 app.use("/api/search", searchBarRouter.router);
